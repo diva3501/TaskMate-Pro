@@ -1,0 +1,62 @@
+/* CreateTask.css */
+
+.create-task-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ensure the form is centered vertically */
+  }
+  
+  .create-task-form {
+    width: 100%;
+    max-width: 400px; /* Adjust as needed */
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .create-task-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .create-task-form input,
+  .create-task-form textarea,
+  .create-task-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .create-task-form select {
+    appearance: none;
+  }
+  
+  .create-task-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #fee6e3;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #111;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .create-task-form button:hover {
+    background-color: #ffdeda;
+  }
+  
+  @media (min-width: 768px) {
+    .create-task-form {
+      padding: 40px;
+    }
+  }
+  
