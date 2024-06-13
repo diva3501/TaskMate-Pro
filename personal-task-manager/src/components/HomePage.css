@@ -1,0 +1,178 @@
+/* Reset and base styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Container for the entire page */
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background: #fff;
+  padding: 10px 0;
+  box-shadow: 0px 5px 0px #dedede;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar nav ul {
+  list-style: none;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar nav ul li {
+  display: inline-block;
+}
+
+.navbar nav ul li a {
+  display: block;
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0 10px;
+  transition: all 0.5s;
+}
+
+.navbar nav ul li a:hover {
+  color: #007BFF;
+}
+
+.navbar nav ul li a:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 0%;
+  content: '.';
+  color: transparent;
+  background: #007BFF;
+  height: 2px;
+  transition: all 0.5s;
+}
+
+.navbar nav ul li a:hover:after {
+  width: 100%;
+}
+
+/* Main content container */
+.dashboard {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 70px; /* Adjusted margin for navbar */
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Styling for sections */
+.motivational-quotes,
+.task-statistics,
+.upcoming-tasks,
+.app-points {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Header styling for sections */
+.motivational-quotes h2,
+.task-statistics h2,
+.upcoming-tasks h2,
+.app-points h2 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Animation for sections */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Styling for Motivational Quotes */
+.motivational-quotes .quote {
+  font-size: 1.2em;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.motivational-quotes .quote:hover {
+  opacity: 1;
+}
+
+/* Styling for Task Statistics */
+.task-statistics p {
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.task-statistics p:hover {
+  font-weight: bold;
+}
+
+.task-statistics .completed {
+  color: rgb(39, 128, 39);
+}
+
+.task-statistics .pending {
+  color: gold;
+}
+
+.task-statistics .overdue {
+  color: red;
+}
+
+/* Styling for App Points */
+.app-points ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.app-points ul li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.app-points ul li:before {
+  content: "➔";
+  margin-right: 10px;
+  color: #007bff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 10px;
+  }
+
+  .navbar nav ul li a {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .dashboard {
+    margin-top: 60px;
+  }
+}

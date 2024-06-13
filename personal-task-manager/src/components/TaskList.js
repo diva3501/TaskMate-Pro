@@ -41,7 +41,21 @@ const TaskList = () => {
 
   return (
     <div>
-      <h1>Task List</h1>
+      <div className="navbar">
+        <nav className="stroke">
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/tasklist">Tasklist</Link></li>
+            <li><Link to="/create">Create Task</Link></li>
+            <li><Link to="/overdue">Overdue Tasks</Link></li>
+            <li><Link to="/profile">Profile</Link></li>
+            
+          </ul>
+        </nav>
+      </div>
+      <br></br><br></br><br></br><br></br><br></br>
+      <br></br>
+      <br></br>
       <Link to="/create" className="create-task-button">Create New Task</Link>
       <ul className="task-list">
         {sortedTasks.map((task, index) => (

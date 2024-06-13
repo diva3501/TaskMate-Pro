@@ -43,7 +43,7 @@ const EditTask = () => {
 
     try {
       await axios.put(`http://localhost:5000/tasks/${id}`, updatedTask);
-      navigate('/');
+      navigate('/tasklist');
     } catch (error) {
       console.error('Error updating task:', error);
     }

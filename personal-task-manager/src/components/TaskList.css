@@ -1,7 +1,15 @@
-h1{
-    text-align: center;
+/* Global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Task List Container */
 .task-list-container {
   padding: 20px;
 }
@@ -11,6 +19,7 @@ h1{
   margin-bottom: 20px;
 }
 
+/* Create Task Button */
 .create-task-button {
   all: unset;
   width: 100px;
@@ -30,7 +39,6 @@ h1{
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  
 }
 
 .create-task-button::after,
@@ -40,7 +48,7 @@ h1{
   bottom: 0;
   right: 0;
   z-index: -99999;
-  transition: all .4s;
+  transition: all 0.4s;
 }
 
 .create-task-button::before {
@@ -79,9 +87,11 @@ h1{
   transform: translate(0, 5%);
 }
 
+/* Task List */
 .task-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .task-item {
@@ -92,19 +102,20 @@ h1{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Edit and Delete Buttons */
 .edit-button,
 .delete-button {
-  --b: 3px;   /* border thickness */
-  --s: .45em; /* size of the corner */
-  --color: #373B44;
-
-  padding: calc(.5em + var(--s)) calc(.9em + var(--s));
+  --b: 3px; /* border thickness */
+  --s: 0.45em; /* size of the corner */
+  --color: #373b44;
+  padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
   color: var(--color);
   --_p: var(--s);
-  background: conic-gradient(from 90deg at var(--b) var(--b),#0000 90deg,var(--color) 0) var(--_p) var(--_p)/calc(100% - var(--b) - 2*var(--_p)) calc(100% - var(--b) - 2*var(--_p));
-  transition: .3s linear, color 0s, background-color 0s;
+  background: conic-gradient(from 90deg at var(--b) var(--b), #0000 90deg, var(--color) 0)
+    var(--_p) var(--_p) / calc(100% - var(--b) - 2 * var(--_p)) calc(100% - var(--b) - 2 * var(--_p));
+  transition: 0.3s linear, color 0s, background-color 0s;
   outline: var(--b) solid #0000;
-  outline-offset: .6em;
+  outline-offset: 0.6em;
   font-size: 16px;
   border: 0;
   user-select: none;
@@ -118,7 +129,7 @@ h1{
 .delete-button:focus-visible {
   --_p: 0px;
   outline-color: var(--color);
-  outline-offset: .05em;
+  outline-offset: 0.05em;
 }
 
 .edit-button:active,
@@ -129,4 +140,31 @@ h1{
 
 .delete-button {
   margin-left: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .task-list-container {
+    padding: 10px;
+  }
+
+  .create-task-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .task-list-heading {
+    font-size: 20px;
+  }
+
+  .task-item {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .edit-button,
+  .delete-button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
 }

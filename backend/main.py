@@ -31,6 +31,19 @@ def get_tasks():
         tasks = cursor.fetchall()
         return jsonify(tasks)
 
+@app.route('/tasks/statistics', methods=['GET'])
+def get_task_statistics():
+    with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        cursor.execute("""
+            SELECT 
+                COUNT(*) FILTER (WHERE status = 'Completed') AS completed,
+                COUNT(*) FILTER (WHERE status = 'Pending') AS pending,
+                COUNT(*) FILTER (WHERE due_date < NOW() AND status != 'Completed') AS overdue
+            FROM tasks;
+        """)
+        stats = cursor.fetchone()
+        return jsonify(stats)
+
 @app.route('/tasks', methods=['POST'])
 def create_task():
     new_task = request.json
@@ -61,6 +74,13 @@ def delete_task(id):
         cursor.execute("DELETE FROM tasks WHERE id = %s;", (id,))
         conn.commit()
         return '', 204
+@app.route('/tasks/overdue', methods=['GET'])
+def get_overdue_tasks():
+    with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        cursor.execute("SELECT * FROM tasks WHERE due_date < NOW() AND status != 'Completed';")
+        overdue_tasks = cursor.fetchall()
+        return jsonify(overdue_tasks)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

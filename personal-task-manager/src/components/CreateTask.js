@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker'; // Import date-picker library
 import 'react-datepicker/dist/react-datepicker.css'; // Import date-picker styles
@@ -30,7 +31,7 @@ const CreateTask = () => {
 
     axios.post('http://localhost:5000/tasks', newTask)
       .then(response => {
-        navigate('/');
+        navigate('/tasklist');
       })
       .catch(error => {
         console.error('Error creating task:', error);
@@ -38,7 +39,21 @@ const CreateTask = () => {
   };
 
   return (
+    
     <div className="create-task-container">
+      <div className="navbar">
+        <nav className="stroke">
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/tasklist">Tasklist</Link></li>
+            <li><Link to="/create">Create Task</Link></li>
+            <li><Link to="/overdue">Overdue Tasks</Link></li>
+            <li><Link to="/profile">Profile</Link></li>
+            
+          </ul>
+        </nav>
+      </div>
+
       <form className="create-task-form" onSubmit={handleSubmit}>
         <h1>Create Task</h1>
         <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
