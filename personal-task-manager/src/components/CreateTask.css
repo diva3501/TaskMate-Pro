@@ -1,15 +1,13 @@
-/* CreateTask.css */
-
 .create-task-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Ensure the form is centered vertically */
+    height: 100vh;
   }
   
   .create-task-form {
     width: 100%;
-    max-width: 400px; /* Adjust as needed */
+    max-width: 400px;
     padding: 20px;
     border-radius: 10px;
     background-color: #ffffff;

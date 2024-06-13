@@ -1,32 +1,61 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; 
+import './Auth.css';
 
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+function Login() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/login', { username, password });
-      localStorage.setItem('token', response.data.token);
-      navigate('/tasks'); // Redirect to the task list or dashboard
-    } catch (error) {
-      setError('Invalid credentials');
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:5000/login', {
+                username,
+                password,
+            });
+            localStorage.setItem('token', response.data.access_token);
+            navigate('/homepage');
+        } catch (err) {
+            console.error('Login error:', err);
+            setError(err.response ? err.response.data.error : 'Login failed');
+        }
+    };
 
-  return (
-    <form onSubmit={handleLogin}>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Login</button>
-      {error && <p>{error}</p>}
-    </form>
-  );
-};
+    return (
+        <div className="auth-container">
+            <h2>Login</h2>
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <button type="submit">Login</button>
+                </div>
+                {error && <p className="error-message">{error}</p>}
+            </form>
+            <div className="signup-link">
+                <p>Don't have an account? <Link to="/signuppage">Sign up here</Link></p>
+            </div>
+        </div>
+    );
+}
 
 export default Login;

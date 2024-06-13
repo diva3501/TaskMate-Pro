@@ -1,4 +1,4 @@
-/* Global styles */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -7,19 +7,25 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 20px;
+ 
 }
 
-/* Task List Container */
+
 .task-list-container {
   padding: 20px;
+  
 }
 
 .task-list-heading {
   font-size: 24px;
   margin-bottom: 20px;
+  
+}
+h2{
+  color:crimson;
 }
 
-/* Create Task Button */
+
 .create-task-button {
   all: unset;
   width: 100px;
@@ -87,7 +93,7 @@ h1 {
   transform: translate(0, 5%);
 }
 
-/* Task List */
+
 .task-list {
   list-style: none;
   padding: 0;
@@ -95,18 +101,18 @@ h1 {
 }
 
 .task-item {
-  background-color: #f0f0f0;
+  background-color: #e1dcdc;;
   padding: 20px;
   margin-bottom: 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Edit and Delete Buttons */
+
 .edit-button,
 .delete-button {
-  --b: 3px; /* border thickness */
-  --s: 0.45em; /* size of the corner */
+  --b: 3px;
+  --s: 0.45em;
   --color: #373b44;
   padding: calc(0.5em + var(--s)) calc(0.9em + var(--s));
   color: var(--color);
@@ -142,7 +148,7 @@ h1 {
   margin-left: 10px;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .task-list-container {
     padding: 10px;
@@ -155,11 +161,13 @@ h1 {
 
   .task-list-heading {
     font-size: 20px;
+    
   }
 
   .task-item {
     padding: 15px;
     margin-bottom: 15px;
+    
   }
 
   .edit-button,

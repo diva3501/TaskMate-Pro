@@ -22,7 +22,7 @@ const HomePage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
-    }, 3000); // Change quote every 3 seconds
+    }, 3000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -56,7 +56,7 @@ const HomePage = () => {
       <div className="navbar">
         <nav className="stroke">
           <ul>
-            <li><Link to="/">Home</Link></li>
+          <li><Link to="/homepage">Home</Link></li>
             <li><Link to="/tasklist">Tasklist</Link></li>
             <li><Link to="/create">Create Task</Link></li>
             <li><Link to="/overdue">Overdue Tasks</Link></li>

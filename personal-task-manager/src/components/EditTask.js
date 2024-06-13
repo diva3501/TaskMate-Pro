@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import DatePicker from 'react-datepicker'; // Import date-picker library
-import 'react-datepicker/dist/react-datepicker.css'; // Import date-picker styles
-import './EditTask.css'; // Assuming you have a CSS file for styling
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './EditTask.css';
 
 const EditTask = () => {
   const { id } = useParams();
   const [task, setTask] = useState({});
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [dueDateTime, setDueDateTime] = useState(new Date()); // Initialize due date and time with current date/time
+  const [dueDateTime, setDueDateTime] = useState(new Date()); 
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState('Medium');
   const [status, setStatus] = useState('Pending');
@@ -24,7 +24,7 @@ const EditTask = () => {
         setTask(taskData);
         setTitle(taskData.title);
         setDescription(taskData.description);
-        setDueDateTime(new Date(taskData.due_date)); // Set due date and time from task data
+        setDueDateTime(new Date(taskData.due_date)); 
         setCategory(taskData.category);
         setPriority(taskData.priority);
         setStatus(taskData.status);

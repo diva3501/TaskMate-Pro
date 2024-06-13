@@ -5,17 +5,20 @@ import CreateTask from './components/CreateTask';
 import EditTask from './components/EditTask';
 import HomePage from './components/HomePage';
 import OverdueTasks from './components/OverdueTasks';
+import SignUp from './components/Signup';
+import Login from './components/Login';
 
 function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/tasklist" element={<TaskList />} />
-        <Route path="/" element={<TaskList />} />
+       <Route path="/homepage" element={<HomePage />} />
+       <Route path="/tasklist" element={<TaskList />} />
         <Route path="/create" element={<CreateTask />} />
         <Route path="/edit/:id" element={<EditTask />} />
         <Route path="/overdue" element={<OverdueTasks />} />
+        <Route path="/signuppage" element={<SignUp />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );

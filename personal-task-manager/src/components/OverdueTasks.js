@@ -24,7 +24,7 @@ const OverdueTasks = () => {
       <div className="navbar">
         <nav className="stroke">
           <ul>
-            <li><Link to="/">Home</Link></li>
+             <li><Link to="/homepage">Home</Link></li>
             <li><Link to="/tasklist">Tasklist</Link></li>
             <li><Link to="/create">Create Task</Link></li>
             <li><Link to="/overdue">Overdue Tasks</Link></li>

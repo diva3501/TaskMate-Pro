@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-CORS(app, resources={r"/tasks/*": {"origins": "*"}})  
+CORS(app, resources={r"/*": {"origins": "*"}})  # CORS settings to allow all origins
 
 def connect_to_database():
     try:
@@ -23,6 +24,45 @@ def connect_to_database():
         return None
 
 conn = connect_to_database()
+
+@app.route('/register', methods=['POST'])
+def register():
+    new_user = request.json
+    username = new_user['username']
+    password = new_user['password']
+    hashed_password = generate_password_hash(password)
+
+    with conn.cursor() as cursor:
+        try:
+            cursor.execute(
+                "INSERT INTO users (username, password) VALUES (%s, %s) RETURNING id, username;",
+                (username, hashed_password)
+            )
+            conn.commit()
+            user = cursor.fetchone()
+            return jsonify({"id": user[0], "username": user[1]}), 201
+        except psycopg2.Error as e:
+            conn.rollback()
+            return jsonify({"error": str(e)}), 400
+
+@app.route('/login', methods=['POST'])
+def login():
+    login_details = request.json
+    username = login_details['username']
+    password = login_details['password']
+
+    with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+        cursor.execute(
+            "SELECT id, username, password FROM users WHERE username = %s;",
+            (username,)
+        )
+        user = cursor.fetchone()
+
+        if user and check_password_hash(user['password'], password):
+            return jsonify({"id": user['id'], "username": user['username']}), 200
+        else:
+            return jsonify({"error": "Invalid username or password"}), 401
+
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
@@ -74,13 +114,13 @@ def delete_task(id):
         cursor.execute("DELETE FROM tasks WHERE id = %s;", (id,))
         conn.commit()
         return '', 204
+
 @app.route('/tasks/overdue', methods=['GET'])
 def get_overdue_tasks():
     with conn.cursor(cursor_factory=RealDictCursor) as cursor:
         cursor.execute("SELECT * FROM tasks WHERE due_date < NOW() AND status != 'Completed';")
         overdue_tasks = cursor.fetchall()
         return jsonify(overdue_tasks)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

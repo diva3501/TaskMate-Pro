@@ -1,10 +1,10 @@
-/* Reset and base styles */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
-/* Container for the entire page */
+
 .homepage-container {
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@ body {
   padding: 20px;
 }
 
-/* Navbar */
+
 .navbar {
   width: 100%;
   background: #fff;
@@ -67,17 +67,17 @@ body {
   width: 100%;
 }
 
-/* Main content container */
+
 .dashboard {
   width: 100%;
   max-width: 800px;
-  margin-top: 70px; /* Adjusted margin for navbar */
+  margin-top: 70px;
   text-align: center;
   padding: 20px;
-  box-sizing: border-box; /* Ensure padding is included in width */
+  box-sizing: border-box;
 }
 
-/* Styling for sections */
+
 .motivational-quotes,
 .task-statistics,
 .upcoming-tasks,
@@ -89,7 +89,7 @@ body {
   animation: fadeIn 2s ease-in-out;
 }
 
-/* Header styling for sections */
+
 .motivational-quotes h2,
 .task-statistics h2,
 .upcoming-tasks h2,
@@ -98,7 +98,7 @@ body {
   font-weight: bold;
 }
 
-/* Animation for sections */
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -108,7 +108,7 @@ body {
   }
 }
 
-/* Styling for Motivational Quotes */
+
 .motivational-quotes .quote {
   font-size: 1.2em;
   opacity: 0.8;
@@ -119,7 +119,7 @@ body {
   opacity: 1;
 }
 
-/* Styling for Task Statistics */
+
 .task-statistics p {
   margin: 10px 0;
   cursor: pointer;
@@ -142,7 +142,7 @@ body {
   color: red;
 }
 
-/* Styling for App Points */
+
 .app-points ul {
   list-style-type: none;
   padding: 0;
@@ -161,7 +161,7 @@ body {
   color: #007bff;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .homepage-container {
     padding: 10px;

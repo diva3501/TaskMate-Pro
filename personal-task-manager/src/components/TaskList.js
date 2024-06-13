@@ -7,20 +7,31 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/tasks')
-      .then(response => {
-        setTasks(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching tasks:', error);
-      });
+    fetchTasks();
   }, []);
 
-  // Function to handle task deletion
+  const fetchTasks = async () => {
+    try {
+      const token = localStorage.getItem('token'); 
+      const response = await axios.get('http://localhost:5000/tasks', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/tasks/${taskId}`);
-      // Update tasks after deletion
+      const token = localStorage.getItem('token');
+      await axios.delete(`http://localhost:5000/tasks/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const updatedTasks = tasks.filter(task => task.id !== taskId);
       setTasks(updatedTasks);
     } catch (error) {
@@ -28,7 +39,6 @@ const TaskList = () => {
     }
   };
 
-  // Sort tasks by priority and status
   const sortedTasks = tasks.sort((a, b) => {
     if (a.status === 'Completed' && b.status !== 'Completed') return 1;
     if (a.status !== 'Completed' && b.status === 'Completed') return -1;
@@ -44,19 +54,19 @@ const TaskList = () => {
       <div className="navbar">
         <nav className="stroke">
           <ul>
-            <li><Link to="/">Home</Link></li>
+            <li><Link to="/homepage">Home</Link></li>
             <li><Link to="/tasklist">Tasklist</Link></li>
             <li><Link to="/create">Create Task</Link></li>
             <li><Link to="/overdue">Overdue Tasks</Link></li>
             <li><Link to="/profile">Profile</Link></li>
-            
           </ul>
         </nav>
       </div>
       <br></br><br></br><br></br><br></br><br></br>
       <br></br>
-      <br></br>
+      
       <Link to="/create" className="create-task-button">Create New Task</Link>
+      <br></br>
       <ul className="task-list">
         {sortedTasks.map((task, index) => (
           <li key={task.id} className="task-item">
