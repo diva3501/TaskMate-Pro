@@ -1,60 +1,170 @@
 .create-task-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../assets/createtask.jpg');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.background-image {
+  width: 50%;
+  height: 100%;
+  background-image: url('../assets/createtask.jpg');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.8);
+}
+
+.create-task-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 10px;
+  background-color: rgba(233, 200, 200, 0.9);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-left: 280px;
+  margin-top: auto;
+}
+
+.create-task-form h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.create-task-form:hover {
+  transform: translateY(-5px);
+}
+
+.create-task-form input,
+.create-task-form textarea,
+.create-task-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: #f9f9f9;
+}
+
+.create-task-form input:focus,
+.create-task-form textarea:focus,
+.create-task-form select:focus {
+  border-color: #6a11cb;
+  box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+  outline: none;
+}
+
+.custom-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #6a11cb;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.custom-arrow {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.custom-arrow:hover {
+  color: #2575fc;
+}
+
+.create-task-form select {
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="%236a11cb" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.react-datepicker__header {
+  background-color: #6a11cb;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.react-datepicker__day:hover {
+  background-color: #f0f0f0;
+}
+
+.react-datepicker__day--selected {
+  background-color: #6a11cb;
+  color: white;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.date-time-picker-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.selected-date {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.create-task-form button {
+  width: 100%;
+  padding: 14px;
+  background-color: #6a11cb;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.create-task-form button:hover {
+  background-color: #2575fc;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
   .create-task-form {
-    width: 100%;
-    max-width: 400px;
     padding: 20px;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   .create-task-form h1 {
     font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
   }
-  
-  .create-task-form input,
-  .create-task-form textarea,
-  .create-task-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  .create-task-form select {
-    appearance: none;
-  }
-  
+
   .create-task-form button {
-    width: 100%;
     padding: 12px;
-    background-color: #fee6e3;
-    border: none;
-    border-radius: 5px;
     font-size: 16px;
-    font-weight: bold;
-    color: #111;
-    cursor: pointer;
-    transition: background-color 0.3s;
   }
-  
-  .create-task-form button:hover {
-    background-color: #ffdeda;
-  }
-  
-  @media (min-width: 768px) {
-    .create-task-form {
-      padding: 40px;
-    }
-  }
-  
+}

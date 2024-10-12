@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from './Navbar';
 import './HomePage.css';
 
 const quotes = [
@@ -22,38 +22,38 @@ const HomePage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/tasks/statistics', {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-        setTaskStatistics(response.data);
+          const token = localStorage.getItem('token'); 
+          const response = await axios.get('http://localhost:3000/tasks/statistics', {
+              headers: {
+                  Authorization: `Bearer ${token}`, 
+              },
+          });
+          setTaskStatistics(response.data);
       } catch (error) {
-        console.error('Error fetching statistics:', error);
+          console.error('Error fetching statistics:', error.response?.data || error.message);
       }
     };
 
     const fetchUpcomingTasks = async () => {
       try {
-        const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/tasks', {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
-        const tasks = response.data;
-        const upcoming = tasks.slice(0, 3);
-        setUpcomingTasks(upcoming);
+          const token = localStorage.getItem('token'); 
+          const response = await axios.get('http://localhost:3000/tasks', {
+              headers: {
+                  Authorization: `Bearer ${token}`, 
+              },
+          });
+          const tasks = response.data;
+          const upcoming = tasks.slice(0, 3); 
+          setUpcomingTasks(upcoming);
       } catch (error) {
-        console.error('Error fetching tasks:', error);
+          console.error('Error fetching tasks:', error.response?.data || error.message);
       }
     };
 
@@ -63,51 +63,61 @@ const HomePage = () => {
 
   return (
     <div className="homepage-container">
-      <div className="navbar">
-        <nav className="stroke">
-          <ul>
-            <li><Link to="/homepage">Home</Link></li>
-            <li><Link to="/tasklist">Tasklist</Link></li>
-            <li><Link to="/create">Create Task</Link></li>
-            <li><Link to="/overdue">Overdue Tasks</Link></li>
-            <li><Link to="/profile">Profile</Link></li>
+      <Navbar /> 
+
+      <div className="dashboard container mt-5">
+        <h2 className="text-center">Welcome Back, User!</h2>
+
+        <div className="quote-section mb-4 text-center">
+          <div className="quote-card p-4">
+            <p className="quote animated-quote">{quotes[currentQuoteIndex]}</p>
+          </div>
+        </div>
+
+        <div className="task-statistics row text-center mb-4">
+          <div className="col-lg-4 col-md-6 mb-4">
+            <div className="stat-card card p-3">
+              <h4>Completed</h4>
+              <p className="completed">{taskStatistics.completed}</p>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 mb-4">
+            <div className="stat-card card p-3">
+              <h4>Pending</h4>
+              <p className="pending">{taskStatistics.pending}</p>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 mb-4">
+            <div className="stat-card card p-3">
+              <h4>Overdue</h4>
+              <p className="overdue">{taskStatistics.overdue}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="upcoming-tasks card p-4 mb-4">
+          <h2 className="text-center">Upcoming Tasks</h2>
+          <ul className="list-group">
+            {upcomingTasks.length > 0 ? (
+              upcomingTasks.map(task => (
+                <li key={task.id} className="list-group-item">
+                  {task.title} - Due in {Math.ceil((new Date(task.due_date) - new Date()) / (1000 * 60 * 60 * 24))} days
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No upcoming tasks!</li>
+            )}
           </ul>
-        </nav>
-      </div>
-
-      <div className="dashboard">
-        <br />
-        <div className="motivational-quotes">
-          <h2>Hello User,</h2>
-          <p className="quote">{quotes[currentQuoteIndex]}</p>
         </div>
 
-        <div className="task-statistics">
-          <h2>Task Statistics</h2>
-          <p>Completed: {taskStatistics.completed}</p>
-          <p>Pending: {taskStatistics.pending}</p>
-          <p>Overdue: {taskStatistics.overdue}</p>
-        </div>
-
-        <div className="upcoming-tasks">
-          <h2>Upcoming Tasks</h2>
-          <ul>
-            {upcomingTasks.map(task => (
-              <li key={task.id}>
-                {task.title} - Due in {Math.ceil((new Date(task.due_date) - new Date()) / (1000 * 60 * 60 * 24))} days
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="app-points">
-          <h2>Why Use Personal Task Manager?</h2>
-          <ul>
-            <li>Organize your tasks efficiently</li>
-            <li>Set priorities and deadlines</li>
-            <li>Track your progress</li>
-            <li>Stay motivated with daily goals</li>
-            <li>Simple and intuitive interface</li>
+        <div className="app-points card p-4 mb-4">
+          <h2 className="text-center">Why Use Personal Task Manager?</h2>
+          <ul className="list-unstyled">
+            <li>➔ Organize your tasks efficiently</li>
+            <li>➔ Set priorities and deadlines</li>
+            <li>➔ Track your progress</li>
+            <li>➔ Stay motivated with daily goals</li>
+            <li>➔ Simple and intuitive interface</li>
           </ul>
         </div>
       </div>

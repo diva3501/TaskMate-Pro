@@ -7,6 +7,7 @@ import HomePage from './components/HomePage';
 import OverdueTasks from './components/OverdueTasks';
 import SignUp from './components/Signup';
 import Login from './components/Login';
+import Notifications from './components/Notifications'; 
 
 function App() {
   return (
@@ -14,11 +15,12 @@ function App() {
       <Routes>
        <Route path="/homepage" element={<HomePage />} />
        <Route path="/tasklist" element={<TaskList />} />
-        <Route path="/create" element={<CreateTask />} />
-        <Route path="/edit/:id" element={<EditTask />} />
-        <Route path="/overdue" element={<OverdueTasks />} />
-        <Route path="/signuppage" element={<SignUp />} />
-        <Route path="/" element={<Login />} />
+       <Route path="/create" element={<CreateTask />} />
+       <Route path="/edit/:id" element={<EditTask />} />
+       <Route path="/overdue" element={<OverdueTasks />} />
+       <Route path="/notifications" element={<Notifications />} /> 
+       <Route path="/signuppage" element={<SignUp />} />
+       <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );

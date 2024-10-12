@@ -5,6 +5,18 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './CreateTask.css';
 
+const CustomHeader = ({ date, decreaseMonth, increaseMonth }) => {
+  const dateFormat = "MMMM yyyy";
+
+  return (
+    <div className="custom-datepicker-header">
+      <button onClick={decreaseMonth} className="custom-arrow">{"<"}</button>
+      <span>{date.toLocaleString('default', { month: 'long' })} {date.getFullYear()}</span>
+      <button onClick={increaseMonth} className="custom-arrow">{">"}</button>
+    </div>
+  );
+};
+
 const CreateTask = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -16,11 +28,10 @@ const CreateTask = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newTask = {
       title,
       description,
-      due_date: dueDate.toISOString(),
+      due_date: dueDate.toISOString().slice(0, 19).replace('T', ' '),
       category,
       priority,
       status
@@ -28,14 +39,15 @@ const CreateTask = () => {
 
     try {
       const token = localStorage.getItem('token'); 
-      await axios.post('http://localhost:3000/tasks', newTask, {
+      const response = await axios.post('http://localhost:3000/tasks', newTask, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log('Task created successfully:', response.data);
       navigate('/tasklist'); 
     } catch (error) {
-      console.error('Error creating task:', error);
+      console.error('Error creating task:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -57,9 +69,21 @@ const CreateTask = () => {
         <h1>Create Task</h1>
         <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
         <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-        <div className="date-time-picker">
-          <DatePicker selected={dueDate} onChange={date => setDueDate(date)} showTimeSelect dateFormat="MMMM d, yyyy h:mm aa" />
+        
+        <div className="date-time-picker-container">
+          <DatePicker
+            selected={dueDate}
+            onChange={date => setDueDate(date)}
+            showTimeSelect
+            dateFormat="MMMM d, yyyy h:mm aa"
+            customInput={<input />}
+            renderCustomHeader={CustomHeader} // Use the custom header
+          />
+          <span className="selected-date">
+            {dueDate.toLocaleString('default', { month: 'long' })} {dueDate.getDate()}, {dueDate.getFullYear()}
+          </span>
         </div>
+        
         <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="">Select Category</option>
           <option value="Work">Work</option>
@@ -67,15 +91,18 @@ const CreateTask = () => {
           <option value="Health">Health</option>
           <option value="Finance">Finance</option>
         </select>
+        
         <select value={priority} onChange={(e) => setPriority(e.target.value)}>
           <option value="High">High</option>
           <option value="Medium">Medium</option>
           <option value="Low">Low</option>
         </select>
+        
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="Pending">Pending</option>
           <option value="Completed">Completed</option>
         </select>
+        
         <button type="submit">Create Task</button>
       </form>
     </div>

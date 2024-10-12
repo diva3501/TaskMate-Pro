@@ -6,29 +6,28 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 20px;
- 
 }
 
-
 .task-list-container {
-  padding: 20px;
-  
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .task-list-heading {
   font-size: 24px;
   margin-bottom: 20px;
-  
-}
-h2{
-  color:crimson;
 }
 
+h2 {
+  color: crimson;
+}
 
 .create-task-button {
   all: unset;
-  width: 100px;
-  height: 30px;
+  width: 150px;
+  height: 40px;
   font-size: 16px;
   background: transparent;
   border: none;
@@ -92,21 +91,29 @@ h2{
   transform: translate(0, 5%);
 }
 
-
 .task-list {
   list-style: none;
+  width: 1000px;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
 .task-item {
-  background-color: #e1dcdc;;
-  padding: 20px;
-  margin-bottom: 20px;
+  background-color: #e1dcdc;
+  padding: 15px;
+  width: calc(45% - 10px);
   border-radius: 20px;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
 }
 
+.task-item:hover {
+  transform: translateY(-5px);
+}
 
 .edit-button,
 .delete-button {
@@ -147,31 +154,72 @@ h2{
   margin-left: 10px;
 }
 
-
 @media (max-width: 768px) {
   .task-list-container {
-    padding: 10px;
-  }
-
-  .create-task-button {
-    font-size: 14px;
-    padding: 8px 16px;
+    padding: 20px;
   }
 
   .task-list-heading {
-    font-size: 20px;
-    
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .task-list {
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
   }
 
   .task-item {
     padding: 15px;
-    margin-bottom: 15px;
-    
+    width: 100%;
+    border-radius: 15px;
+  }
+
+  .create-task-button {
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    background: #007bff;
+    border-radius: 5px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+  }
+
+  .create-task-button:hover {
+    background: #0056b3;
   }
 
   .edit-button,
   .delete-button {
     font-size: 14px;
-    padding: 6px 12px;
+    padding: 8px 12px;
+  }
+
+  .popup {
+    padding: 10px;
+  }
+
+  .popup-content {
+    width: 90%;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .popup-header {
+    font-size: 18px;
+  }
+
+  .popup-button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
   }
 }
