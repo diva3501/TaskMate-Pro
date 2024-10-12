@@ -100,9 +100,9 @@ const TaskList = () => {
       <div className="task-list-container">
         <Link to="/create" className="create-task-button">Create New Task</Link>
         <br />
-        
+
         {error && <p className="error-message">{error}</p>}
-        
+
         <ul className="task-list">
           {sortedTasks.length === 0 ? (
             <li>No tasks available.</li>
@@ -129,6 +129,7 @@ const TaskList = () => {
         {isPopupOpen && (
           <div className="popup">
             <div className="popup-content">
+              <button className="close-button" onClick={() => setIsPopupOpen(false)}>✕</button>
               <h2>Edit Task</h2>
               <div>
                 <label>Due Date:</label>
@@ -146,8 +147,8 @@ const TaskList = () => {
                   <option value="Completed">Completed</option>
                 </select>
               </div>
-              <button onClick={handlePopupSubmit}>Update</button>
-              <button onClick={() => setIsPopupOpen(false)}>Cancel</button>
+              <button className="back-button" onClick={handlePopupSubmit}>Update</button>
+              <button className="back-button" onClick={() => setIsPopupOpen(false)}>Cancel</button>
             </div>
           </div>
         )}

@@ -74,4 +74,20 @@
       padding: 10px 15px;
     }
   }
-  
+  .notification-icon {
+    position: relative;
+    text-decoration: none;
+    color: inherit; 
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 12px;
+}
+

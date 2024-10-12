@@ -2,43 +2,86 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 50px;
+  background: linear-gradient(to right, #e66465, #9198e5);
 }
 
 .dashboard {
   width: 100%;
-  max-width: 900px;
-  margin-top: 70px;
+  max-width: 1200px;
+  margin-top: 50px;
   padding: 20px;
-  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
 }
 
-.motivational-quotes {
-  background-color: #007BFF;
+.quote-section {
+  margin: 20px 0;
+}
+
+.quote-card {
+  background-color: #6a11cb;
   color: white;
   border-radius: 15px;
-  transition: transform 0.5s ease;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s;
 }
 
-.motivational-quotes:hover {
+.quote-card:hover {
   transform: scale(1.05);
 }
 
 .animated-quote {
   font-size: 1.5em;
-  opacity: 0.9;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.task-statistics {
+  display: flex;
+  gap: 180px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .task-statistics .stat-card {
+  flex: 1;
+  margin: 0 10px;
+  min-width: 200px;
+  max-width: 250px;
   background-color: #f8f9fa;
   border: 1px solid #ced4da;
   border-radius: 10px;
   transition: transform 0.3s;
+  padding: 20px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .task-statistics .stat-card:hover {
   transform: translateY(-5px);
 }
+
+@media (max-width: 768px) {
+  .task-statistics {
+    flex-direction: column;
+  }
+  
+  .task-statistics .stat-card {
+    margin: 10px 0;
+  }
+}
+
 
 .upcoming-tasks, .app-points {
   border-radius: 10px;
@@ -60,5 +103,10 @@
 @media (max-width: 768px) {
   .dashboard {
     margin-top: 60px;
+    padding: 15px;
+  }
+
+  .quote-card {
+    font-size: 1.2em;
   }
 }

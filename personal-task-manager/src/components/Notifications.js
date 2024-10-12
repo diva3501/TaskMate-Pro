@@ -36,12 +36,25 @@ const Notifications = () => {
         }
     };
 
+    const markAsRead = async (id) => {
+        try {
+            await axios.put(`http://localhost:3000/notifications/${id}`, { is_read: true }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            fetchNotifications();
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
+    };
+
     const getNotificationClass = (type) => {
         switch (type) {
             case 'overdue':
-                return 'notification-box notification-overdue';
+                return 'notification-box notification-overdue'; 
             case 'completed':
-                return 'notification-box notification-completed';
+                return 'notification-box notification-completed'; 
             case 'edited':
                 return 'notification-box notification-edited';
             case 'created':
@@ -50,7 +63,7 @@ const Notifications = () => {
                 return 'notification-box';
         }
     };
-
+    
     return (
         <div className="notifications-container">
             <Navbar /> 
@@ -62,7 +75,7 @@ const Notifications = () => {
                     <div className="notification-box">No notifications available.</div>
                 ) : (
                     notifications.map((notification) => (
-                        <div key={notification.id} className={getNotificationClass(notification.type)}>
+                        <div key={notification.id} className={getNotificationClass(notification.type)} onClick={() => markAsRead(notification.id)}>
                             <p>{notification.message}</p>
                             <small>{new Date(notification.created_at).toLocaleString()}</small>
                         </div>

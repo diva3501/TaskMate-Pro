@@ -13,6 +13,21 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.task-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.task-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .task-list-heading {
@@ -221,5 +236,116 @@ h2 {
     width: 100%;
     padding: 12px;
     font-size: 16px;
+  }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f4f4f9;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  width: 90%;
+  max-width: 600px;
+  z-index: 1000;
+  padding: 20px;
+  animation: popup-appear 0.3s ease-out;
+}
+
+@keyframes popup-appear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popup h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.popup label {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.popup select,
+.popup input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s;
+}
+
+.popup input:focus,
+.popup select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.popup button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+.popup button:active {
+  background-color: #00408f;
+}
+
+.popup .popup-cancel {
+  background-color: #6c757d;
+}
+
+.popup .popup-cancel:hover {
+  background-color: #5a6268;
+}
+
+.popup .popup-cancel:active {
+  background-color: #4e555b;
+}
+
+@media (max-width: 768px) {
+  .popup {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .popup h2 {
+    font-size: 20px;
+  }
+
+  .popup button {
+    font-size: 14px;
+    padding: 10px;
   }
 }

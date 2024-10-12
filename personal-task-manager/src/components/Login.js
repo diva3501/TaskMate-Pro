@@ -16,6 +16,7 @@ function Login() {
             username,
             password,
         });
+        localStorage.setItem('username', username); 
         localStorage.setItem('token', response.data.token); 
         navigate('/homepage');
     } catch (err) {

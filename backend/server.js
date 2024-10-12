@@ -11,7 +11,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
-    
+    host: 'localhost',
+    user: 'taskmanager',
+    password: 'user1234',
+    database: 'taskmanager',
 });
 
 connection.connect((err) => {
@@ -77,15 +80,24 @@ app.get('/tasks', verifyToken, (req, res) => {
     });
 });
 
-app.get('/notifications', verifyToken, (req, res) => {
-    connection.query('SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC', [req.userId], (error, results) => {
-        if (error) {
-            console.error("SQL error in /notifications:", error);
-            return res.status(500).json({ error: error.message });
-        }
-        res.json(results);
-    });
+// Get notifications for a user
+app.get('/notifications', authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id; // Get the user ID from the authenticated token
+        
+        // Query to fetch notifications
+        const notifications = await db.query(
+            'SELECT * FROM notifications WHERE user_id = $1 ORDER BY created_at DESC',
+            [userId]
+        );
+
+        res.json(notifications.rows);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
+
 
 app.delete('/notifications', verifyToken, (req, res) => {
     connection.query('DELETE FROM notifications WHERE user_id = ?', [req.userId], (error, results) => {
@@ -120,26 +132,40 @@ app.post('/tasks', verifyToken, (req, res) => {
 
 app.put('/tasks/edit/:id', verifyToken, (req, res) => {
     const { id } = req.params;
-    const { due_date, status } = req.body; 
+    const { due_date, status } = req.body;
 
-    const query = 'UPDATE tasks SET due_date = ?, status = ? WHERE id = ? AND user_id = ?'; 
-    connection.query(query, [due_date, status, id, req.userId], (err, results) => {
+    const getTaskTitleQuery = 'SELECT title FROM tasks WHERE id = ? AND user_id = ?';
+    connection.query(getTaskTitleQuery, [id, req.userId], (err, taskResult) => {
         if (err) {
             console.error('Error executing query:', err);
-            return res.status(500).json({ error: 'Error updating task' });
+            return res.status(500).json({ error: 'Error fetching task details' });
         }
-        if (results.affectedRows === 0) {
+        if (taskResult.length === 0) {
             return res.status(404).json({ error: 'Task not found or not authorized' });
         }
-        connection.query('INSERT INTO notifications (user_id, message) VALUES (?, ?)', 
-            [req.userId, `Task edited: ${id}`], 
-            (error) => {
-                if (error) console.error("Error creating notification:", error);
+
+        const taskTitle = taskResult[0].title;
+
+        const updateTaskQuery = 'UPDATE tasks SET due_date = ?, status = ? WHERE id = ? AND user_id = ?';
+        connection.query(updateTaskQuery, [due_date, status, id, req.userId], (err, results) => {
+            if (err) {
+                console.error('Error executing query:', err);
+                return res.status(500).json({ error: 'Error updating task' });
             }
-        );
-        res.json({ message: 'Task updated successfully' });
+            if (results.affectedRows === 0) {
+                return res.status(404).json({ error: 'Task not found or not authorized' });
+            }
+
+            const insertNotificationQuery = 'INSERT INTO notifications (user_id, message) VALUES (?, ?)';
+            connection.query(insertNotificationQuery, [req.userId, `Task edited: ${taskTitle}`], (error) => {
+                if (error) console.error('Error creating notification:', error);
+            });
+
+            res.json({ message: 'Task updated successfully' });
+        });
     });
 });
+
 
 app.delete('/tasks/:id', verifyToken, (req, res) => {
     const { id } = req.params;
@@ -232,6 +258,8 @@ app.get('/tasks/statistics', verifyToken, (req, res) => {
         }
     );
 });
+
+
 
 const PORT = 3000;
 app.listen(PORT, () => {

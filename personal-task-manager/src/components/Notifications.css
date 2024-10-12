@@ -15,8 +15,8 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-left: 1270px;
     float: right;
+    margin-left: 1270px;
     margin-bottom: 10px;
     transition: background-color 0.3s;
 }
@@ -30,9 +30,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
     max-width: 1200px;
-   
 }
-
 
 .notification-box {
     background-color: #ffffff;
@@ -42,6 +40,7 @@
     margin: 10px;
     flex: 0 0 calc(50% - 20px);
     transition: transform 0.2s;
+    border: 2px solid transparent;
 }
 
 .notification-box:hover {
@@ -60,4 +59,18 @@
     font-size: 12px;
     display: block;
     margin-top: 4px;
+}
+
+
+.notification-overdue {
+    border: 2px solid #f44336;
+}
+
+.notification-completed {
+    border: 2px solid #4caf50;
+}
+
+.notification-edited,
+.notification-created {
+    border: 2px solid #ddd;
 }

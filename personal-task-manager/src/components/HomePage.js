@@ -18,6 +18,7 @@ const HomePage = () => {
     overdue: 0
   });
   const [upcomingTasks, setUpcomingTasks] = useState([]);
+  const [username, setUsername] = useState(''); 
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -29,44 +30,51 @@ const HomePage = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-          const token = localStorage.getItem('token'); 
-          const response = await axios.get('http://localhost:3000/tasks/statistics', {
-              headers: {
-                  Authorization: `Bearer ${token}`, 
-              },
-          });
-          setTaskStatistics(response.data);
+        const token = localStorage.getItem('token'); 
+        const response = await axios.get('http://localhost:3000/tasks/statistics', {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+        setTaskStatistics(response.data);
       } catch (error) {
-          console.error('Error fetching statistics:', error.response?.data || error.message);
+        console.error('Error fetching statistics:', error.response?.data || error.message);
       }
     };
 
     const fetchUpcomingTasks = async () => {
       try {
-          const token = localStorage.getItem('token'); 
-          const response = await axios.get('http://localhost:3000/tasks', {
-              headers: {
-                  Authorization: `Bearer ${token}`, 
-              },
-          });
-          const tasks = response.data;
-          const upcoming = tasks.slice(0, 3); 
-          setUpcomingTasks(upcoming);
+        const token = localStorage.getItem('token'); 
+        const response = await axios.get('http://localhost:3000/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+        const tasks = response.data;
+        const upcoming = tasks.slice(0, 3); 
+        setUpcomingTasks(upcoming);
       } catch (error) {
-          console.error('Error fetching tasks:', error.response?.data || error.message);
+        console.error('Error fetching tasks:', error.response?.data || error.message);
+      }
+    };
+
+    const fetchUserName = () => {
+      const name = localStorage.getItem('username'); 
+      if (name) {
+        setUsername(name);
       }
     };
 
     fetchStatistics();
     fetchUpcomingTasks();
+    fetchUserName(); 
   }, []);
 
   return (
     <div className="homepage-container">
       <Navbar /> 
-
       <div className="dashboard container mt-5">
-        <h2 className="text-center">Welcome Back, User!</h2>
+        <h2 className="text-center">Welcome Back, {username}!</h2> 
 
         <div className="quote-section mb-4 text-center">
           <div className="quote-card p-4">
@@ -96,7 +104,7 @@ const HomePage = () => {
         </div>
 
         <div className="upcoming-tasks card p-4 mb-4">
-          <h2 className="text-center">Upcoming Tasks</h2>
+          <h2 className="text-center">Scheduled Tasks</h2>
           <ul className="list-group">
             {upcomingTasks.length > 0 ? (
               upcomingTasks.map(task => (

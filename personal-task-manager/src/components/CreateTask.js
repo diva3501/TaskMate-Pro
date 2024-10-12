@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Navbar from './Navbar'; 
 import './CreateTask.css';
 
 const CustomHeader = ({ date, decreaseMonth, increaseMonth }) => {
@@ -53,18 +54,8 @@ const CreateTask = () => {
 
   return (
     <div className="create-task-container">
-      <div className="navbar">
-        <nav className="stroke">
-          <ul>
-            <li><Link to="/homepage">Home</Link></li>
-            <li><Link to="/tasklist">Tasklist</Link></li>
-            <li><Link to="/create">Create Task</Link></li>
-            <li><Link to="/overdue">Overdue Tasks</Link></li>
-            <li><Link to="/profile">Profile</Link></li>
-          </ul>
-        </nav>
-      </div>
-
+      <Navbar />
+      
       <form className="create-task-form" onSubmit={handleSubmit}>
         <h1>Create Task</h1>
         <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
@@ -77,7 +68,7 @@ const CreateTask = () => {
             showTimeSelect
             dateFormat="MMMM d, yyyy h:mm aa"
             customInput={<input />}
-            renderCustomHeader={CustomHeader} // Use the custom header
+            renderCustomHeader={CustomHeader} 
           />
           <span className="selected-date">
             {dueDate.toLocaleString('default', { month: 'long' })} {dueDate.getDate()}, {dueDate.getFullYear()}

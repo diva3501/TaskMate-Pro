@@ -7,6 +7,7 @@
   background-size: cover;
   background-position: center;
   position: relative;
+  margin-top: 55px;
 }
 
 .background-image {
@@ -23,9 +24,9 @@
   max-width: 400px;
   padding: 40px;
   border-radius: 10px;
-  background-color: rgba(233, 200, 200, 0.9);
+  background-color: rgba(172, 123, 123, 0.9);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  margin-left: 280px;
+  margin: auto; 
   margin-top: auto;
 }
 
@@ -33,7 +34,7 @@
   font-size: 26px;
   margin-bottom: 20px;
   text-align: center;
-  color: #333;
+  color: #ffffff;
 }
 
 .create-task-form:hover {
@@ -156,15 +157,31 @@
 
 @media (max-width: 768px) {
   .create-task-form {
-    padding: 20px;
+      padding: 20px; 
+      margin: 20px;
   }
 
   .create-task-form h1 {
-    font-size: 24px;
+      font-size: 22px; 
   }
 
   .create-task-form button {
-    padding: 12px;
-    font-size: 16px;
+      padding: 12px;
+      font-size: 16px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .create-task-form {
+      padding: 15px; 
+  }
+
+  .create-task-form h1 {
+      font-size: 20px; 
+  }
+
+  .create-task-form button {
+      padding: 10px; 
+      font-size: 14px; 
   }
 }
