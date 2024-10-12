@@ -10,12 +10,11 @@ function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/register', {
+            const response = await axios.post('http://localhost:3000/register', {
                 username,
                 password,
             });
             console.log('User registered:', response.data);
-            // Redirect to login page after successful registration
             window.location.href = '/loginpage';
         } catch (err) {
             console.error('Registration error:', err);

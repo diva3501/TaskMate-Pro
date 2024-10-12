@@ -5,7 +5,7 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # CORS settings to allow all origins
+CORS(app, resources={r"/*": {"origins": "*"}})  
 
 def connect_to_database():
     try:

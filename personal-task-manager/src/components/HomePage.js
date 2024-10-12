@@ -22,14 +22,19 @@ const HomePage = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
-    }, 3000); 
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/tasks/statistics');
+        const token = localStorage.getItem('token'); 
+        const response = await axios.get('http://localhost:3000/tasks/statistics', {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
         setTaskStatistics(response.data);
       } catch (error) {
         console.error('Error fetching statistics:', error);
@@ -38,9 +43,14 @@ const HomePage = () => {
 
     const fetchUpcomingTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/tasks');
+        const token = localStorage.getItem('token'); 
+        const response = await axios.get('http://localhost:3000/tasks', {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
         const tasks = response.data;
-        const upcoming = tasks.filter(task => new Date(task.due_date) > new Date() && task.status !== 'Completed').slice(0, 3);
+        const upcoming = tasks.slice(0, 3);
         setUpcomingTasks(upcoming);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -56,18 +66,17 @@ const HomePage = () => {
       <div className="navbar">
         <nav className="stroke">
           <ul>
-          <li><Link to="/homepage">Home</Link></li>
+            <li><Link to="/homepage">Home</Link></li>
             <li><Link to="/tasklist">Tasklist</Link></li>
             <li><Link to="/create">Create Task</Link></li>
             <li><Link to="/overdue">Overdue Tasks</Link></li>
             <li><Link to="/profile">Profile</Link></li>
-            
           </ul>
         </nav>
       </div>
 
       <div className="dashboard">
-      <br></br>
+        <br />
         <div className="motivational-quotes">
           <h2>Hello User,</h2>
           <p className="quote">{quotes[currentQuoteIndex]}</p>
@@ -84,7 +93,9 @@ const HomePage = () => {
           <h2>Upcoming Tasks</h2>
           <ul>
             {upcomingTasks.map(task => (
-              <li key={task.id}>{task.title} - Due in {Math.ceil((new Date(task.due_date) - new Date()) / (1000 * 60 * 60 * 24))} days</li>
+              <li key={task.id}>
+                {task.title} - Due in {Math.ceil((new Date(task.due_date) - new Date()) / (1000 * 60 * 60 * 24))} days
+              </li>
             ))}
           </ul>
         </div>

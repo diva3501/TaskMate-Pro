@@ -10,19 +10,20 @@ function Login() {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5000/login', {
-                username,
-                password,
-            });
-            localStorage.setItem('token', response.data.access_token);
-            navigate('/homepage');
-        } catch (err) {
-            console.error('Login error:', err);
-            setError(err.response ? err.response.data.error : 'Login failed');
-        }
-    };
+    e.preventDefault();
+    try {
+        const response = await axios.post('http://localhost:3000/login', {
+            username,
+            password,
+        });
+        localStorage.setItem('token', response.data.token); 
+        navigate('/homepage');
+    } catch (err) {
+        console.error('Login error:', err);
+        setError(err.response ? err.response.data.error : 'Login failed');
+    }
+};
+
 
     return (
         <div className="auth-container">

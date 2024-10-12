@@ -5,6 +5,7 @@ import './TaskList.css';
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
     fetchTasks();
@@ -12,8 +13,12 @@ const TaskList = () => {
 
   const fetchTasks = async () => {
     try {
-      const token = localStorage.getItem('token'); 
-      const response = await axios.get('http://localhost:5000/tasks', {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('No authentication token found. Please log in.');
+        return;
+      }
+      const response = await axios.get('http://localhost:3000/tasks', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -21,13 +26,14 @@ const TaskList = () => {
       setTasks(response.data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
+      setError('Failed to fetch tasks. Please try again later.');
     }
   };
 
   const deleteTask = async (taskId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/tasks/${taskId}`, {
+      await axios.delete(`http://localhost:3000/tasks/${taskId}`, { 
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,6 +42,7 @@ const TaskList = () => {
       setTasks(updatedTasks);
     } catch (error) {
       console.error('Error deleting task:', error);
+      setError('Failed to delete task. Please try again later.');
     }
   };
 
@@ -62,27 +69,34 @@ const TaskList = () => {
           </ul>
         </nav>
       </div>
-      <br></br><br></br><br></br><br></br><br></br>
-      <br></br>
+
+      <br /><br /><br /><br /><br /><br /><br />
       
       <Link to="/create" className="create-task-button">Create New Task</Link>
-      <br></br>
+      <br />
+      
+      {error && <p className="error-message">{error}</p>} 
+      
       <ul className="task-list">
-        {sortedTasks.map((task, index) => (
-          <li key={task.id} className="task-item">
-            <span className="task-number">Task {index + 1}:</span>
-            <div className="task-details">
-              <h2>{task.title}</h2>
-              <p>{task.description}</p>
-              <p>Priority: {task.priority}</p>
-              <p>Status: {task.status}</p>
-            </div>
-            <div className="button-group">
-              <Link to={`/edit/${task.id}`} className="edit-button">Edit</Link>
-              <button className="delete-button" onClick={() => deleteTask(task.id)}>Delete</button>
-            </div>
-          </li>
-        ))}
+        {sortedTasks.length === 0 ? (
+          <li>No tasks available.</li> 
+        ) : (
+          sortedTasks.map((task, index) => (
+            <li key={task.id} className="task-item">
+              <span className="task-number">Task {index + 1}:</span>
+              <div className="task-details">
+                <h2>{task.title}</h2>
+                <p>{task.description}</p>
+                <p>Priority: {task.priority}</p>
+                <p>Status: {task.status}</p>
+              </div>
+              <div className="button-group">
+                <Link to={`/edit/${task.id}`} className="edit-button">Edit</Link>
+                <button className="delete-button" onClick={() => deleteTask(task.id)}>Delete</button>
+              </div>
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './CreateTask.css';
@@ -15,7 +14,7 @@ const CreateTask = () => {
   const [status, setStatus] = useState('Pending');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newTask = {
@@ -27,14 +26,17 @@ const CreateTask = () => {
       status
     };
 
-    axios.post('http://localhost:5000/tasks', newTask)
-      .then(response => {
-        navigate('/tasklist'); // Redirect to task list after successful task creation
-      })
-      .catch(error => {
-        console.error('Error creating task:', error);
-        // Handle error: display message to user or log it for debugging
+    try {
+      const token = localStorage.getItem('token'); 
+      await axios.post('http://localhost:3000/tasks', newTask, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+      navigate('/tasklist'); 
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
   };
 
   return (
@@ -42,7 +44,7 @@ const CreateTask = () => {
       <div className="navbar">
         <nav className="stroke">
           <ul>
-          <li><Link to="/homepage">Home</Link></li>
+            <li><Link to="/homepage">Home</Link></li>
             <li><Link to="/tasklist">Tasklist</Link></li>
             <li><Link to="/create">Create Task</Link></li>
             <li><Link to="/overdue">Overdue Tasks</Link></li>

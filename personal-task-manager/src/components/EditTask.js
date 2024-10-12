@@ -19,7 +19,7 @@ const EditTask = () => {
   useEffect(() => {
     const fetchTask = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/tasks/${id}`);
+        const response = await axios.get(`http://localhost:3000/tasks/${id}`);
         const taskData = response.data;
         setTask(taskData);
         setTitle(taskData.title);
@@ -42,7 +42,7 @@ const EditTask = () => {
     const updatedTask = { title, description, due_date: dueDateTime.toISOString(), category, priority, status };
 
     try {
-      await axios.put(`http://localhost:5000/tasks/${id}`, updatedTask);
+      await axios.put(`http://localhost:3000/tasks/${id}`, updatedTask);
       navigate('/tasklist');
     } catch (error) {
       console.error('Error updating task:', error);
