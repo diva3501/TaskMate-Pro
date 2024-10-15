@@ -10,7 +10,7 @@ const OverdueTasks = () => {
     const fetchOverdueTasks = async () => {
       try {
         const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/tasks/overdue', {
+        const response = await axios.get('http://localhost:5000/tasks/overdue', {
           headers: {
             Authorization: `Bearer ${token}`, 
           },

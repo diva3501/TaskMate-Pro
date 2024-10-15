@@ -31,7 +31,7 @@ const HomePage = () => {
     const fetchStatistics = async () => {
       try {
         const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/tasks/statistics', {
+        const response = await axios.get('http://localhost:5000/tasks/statistics', {
           headers: {
             Authorization: `Bearer ${token}`, 
           },
@@ -45,7 +45,7 @@ const HomePage = () => {
     const fetchUpcomingTasks = async () => {
       try {
         const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/tasks', {
+        const response = await axios.get('http://localhost:5000/tasks', {
           headers: {
             Authorization: `Bearer ${token}`, 
           },

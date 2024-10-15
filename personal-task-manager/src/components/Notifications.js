@@ -12,7 +12,7 @@ const Notifications = () => {
 
     const fetchNotifications = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/notifications', {
+            const response = await axios.get('http://localhost:5000/notifications', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -25,7 +25,7 @@ const Notifications = () => {
 
     const clearNotifications = async () => {
         try {
-            await axios.delete('http://localhost:3000/notifications', {
+            await axios.delete('http://localhost:5000/notifications', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -38,7 +38,7 @@ const Notifications = () => {
 
     const markAsRead = async (id) => {
         try {
-            await axios.put(`http://localhost:3000/notifications/${id}`, { is_read: true }, {
+            await axios.put(`http://localhost:5000/notifications/${id}`, { is_read: true }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },

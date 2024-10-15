@@ -25,14 +25,17 @@ connection.connect((err) => {
     console.log('Connected to the database successfully!');
 });
 
+// Middleware to verify JWT
 const verifyToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
+        console.log('No token provided');
         return res.status(403).json({ error: 'No token provided' });
     }
 
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
+            console.error('Token verification error:', err); // Log the error
             return res.status(401).json({ error: 'Failed to authenticate token' });
         }
         req.userId = decoded.id;
@@ -40,6 +43,7 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+// User Registration
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -52,6 +56,7 @@ app.post('/register', (req, res) => {
     });
 });
 
+// User Login
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
@@ -70,6 +75,7 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Get User Tasks
 app.get('/tasks', verifyToken, (req, res) => {
     connection.query('SELECT * FROM tasks WHERE user_id = ?', [req.userId], (error, results) => {
         if (error) {
@@ -80,25 +86,37 @@ app.get('/tasks', verifyToken, (req, res) => {
     });
 });
 
-// Get notifications for a user
-app.get('/notifications', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.id; // Get the user ID from the authenticated token
-        
-        // Query to fetch notifications
-        const notifications = await db.query(
-            'SELECT * FROM notifications WHERE user_id = $1 ORDER BY created_at DESC',
-            [userId]
-        );
-
-        res.json(notifications.rows);
-    } catch (error) {
-        console.error('Error fetching notifications:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
+// Unread Notifications Count
+app.get('/notifications/unread-count', verifyToken, (req, res) => {
+    connection.query(
+        'SELECT COUNT(*) AS count FROM notifications WHERE user_id = ? AND is_read = 0',
+        [req.userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching unread notifications count:', error);
+                return res.status(500).json({ error: error.message });
+            }
+            res.json({ count: results[0].count });
+        }
+    );
 });
 
+// Get Notifications
+app.get('/notifications', verifyToken, (req, res) => {
+    connection.query(
+        'SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC',
+        [req.userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching notifications:', error);
+                return res.status(500).json({ error: error.message });
+            }
+            res.json(results);
+        }
+    );
+});
 
+// Clear Notifications
 app.delete('/notifications', verifyToken, (req, res) => {
     connection.query('DELETE FROM notifications WHERE user_id = ?', [req.userId], (error, results) => {
         if (error) {
@@ -109,6 +127,7 @@ app.delete('/notifications', verifyToken, (req, res) => {
     });
 });
 
+// Create New Task
 app.post('/tasks', verifyToken, (req, res) => {
     const { title, description, due_date, category, priority, status } = req.body;
 
@@ -130,6 +149,7 @@ app.post('/tasks', verifyToken, (req, res) => {
     );
 });
 
+// Edit Task
 app.put('/tasks/edit/:id', verifyToken, (req, res) => {
     const { id } = req.params;
     const { due_date, status } = req.body;
@@ -166,7 +186,7 @@ app.put('/tasks/edit/:id', verifyToken, (req, res) => {
     });
 });
 
-
+// Delete Task
 app.delete('/tasks/:id', verifyToken, (req, res) => {
     const { id } = req.params;
 
@@ -187,6 +207,7 @@ app.delete('/tasks/:id', verifyToken, (req, res) => {
     });
 });
 
+// Get Overdue Tasks
 app.get('/tasks/overdue', verifyToken, (req, res) => {
     connection.query(
         "SELECT * FROM tasks WHERE due_date < NOW() AND status != 'Completed' AND user_id = ?",
@@ -230,12 +251,13 @@ app.put('/tasks/complete/:id', verifyToken, (req, res) => {
             return res.status(400).json({ error: error.message });
         }
         if (results.affectedRows === 0) {
-            return res.status(404).json({ error: 'Task not found or not authorized to complete this task' });
+            return res.status(404).json({ error: 'Task not found or not authorized' });
         }
+        const notificationMessage = `Task completed: ${id}`;
         connection.query('INSERT INTO notifications (user_id, message) VALUES (?, ?)', 
-            [req.userId, `Congratulations! Task completed: ${id}`], 
+            [req.userId, notificationMessage], 
             (err) => {
-                if (err) console.error("Error creating notification:", err);
+                if (err) console.error("Error creating notification for completed task:", err);
             }
         );
         res.json({ message: 'Task marked as completed' });
@@ -259,9 +281,201 @@ app.get('/tasks/statistics', verifyToken, (req, res) => {
     );
 });
 
+app.get('/collaboration/groups', verifyToken, (req, res) => {
+    connection.query(
+        `SELECT c.id, c.name 
+        FROM collaborations c
+        JOIN collaboration_members cm ON cm.collaboration_id = c.id
+        WHERE cm.user_id = ?`, [req.userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching task groups:', error);
+                return res.status(500).json({ error: 'Error fetching task groups' });
+            }
+            res.json(results);
+        }
+    );
+});
+
+app.post('/collaboration/groups', verifyToken, (req, res) => {
+    console.log(req.body);
+    const { name } = req.body;  
+
+    if (!name) { 
+        return res.status(400).json({ error: 'Group name is required' });
+    }
+
+    connection.query('INSERT INTO collaborations (name, created_by) VALUES (?, ?)', [name, req.userId], (error, result) => {
+        if (error) {
+            console.error('Error creating task group:', error);
+            return res.status(500).json({ error: 'Error creating task group' });
+        }
+        const groupId = result.insertId;
+
+        connection.query('INSERT INTO collaboration_members (collaboration_id, user_id) VALUES (?, ?)', [groupId, req.userId], (err) => {
+            if (err) {
+                console.error('Error adding user to collaboration_members:', err);
+                return res.status(500).json({ error: 'Error adding user to group' });
+            }
+            res.status(201).json({ id: groupId, name }); 
+        });
+    });
+});
+
+app.post('/collaboration/groups/:groupId/invite', verifyToken, (req, res) => {
+    const { groupId } = req.params;
+    const { receiver_username } = req.body;
+
+    if (!receiver_username) {
+        return res.status(400).json({ error: 'Receiver username is required' });
+    }
+
+    connection.query('SELECT id FROM users WHERE username = ?', [receiver_username], (err, results) => {
+        if (err) {
+            console.error('Error fetching user ID:', err);
+            return res.status(500).json({ error: 'Error inviting user' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const receiverId = results[0].id;
+
+        connection.query('SELECT * FROM collaboration_members WHERE collaboration_id = ? AND user_id = ?', [groupId, receiverId], (err, members) => {
+            if (err) {
+                console.error('Error checking group membership:', err);
+                return res.status(500).json({ error: 'Error checking group membership' });
+            }
+            if (members.length > 0) {
+                return res.status(400).json({ error: 'User is already a member of this group' });
+            }
+
+            connection.query('INSERT INTO group_invitations (collaboration_id, sender_id, receiver_id, status) VALUES (?, ?, ?, ?)', [groupId, req.userId, receiverId, 'Pending'], (err) => {
+                if (err) {
+                    console.error('Error sending invitation:', err);
+                    return res.status(500).json({ error: 'Error sending invitation' });
+                }
+                res.status(201).json({ message: `Invitation sent to ${receiver_username}` });
+            });
+        });
+    });
+});
 
 
-const PORT = 3000;
+app.put('/collaboration/invitations/:invitationId/accept', verifyToken, (req, res) => {
+    const invitationId = req.params.invitationId;
+
+    connection.query('UPDATE group_invitations SET status = "Accepted" WHERE id = ?', [invitationId], (error, results) => {
+        if (error) {
+            console.error('Error accepting invitation:', error);
+            return res.status(500).json({ error: 'Error accepting invitation' });
+        }
+
+        connection.query(
+            'INSERT INTO collaboration_members (collaboration_id, user_id) SELECT collaboration_id, receiver_id FROM group_invitations WHERE id = ?',
+            [invitationId],
+            (err) => {
+                if (err) {
+                    console.error('Error adding user to collaboration_members:', err);
+                    return res.status(500).json({ error: 'Error joining the group' });
+                }
+                res.json({ message: 'Invitation accepted successfully' });
+            }
+        );
+    });
+});
+
+app.put('/collaboration/invitations/:invitationId/reject', verifyToken, (req, res) => {
+    const invitationId = req.params.invitationId;
+
+    connection.query('UPDATE group_invitations SET status = "Rejected" WHERE id = ?', [invitationId], (error) => {
+        if (error) {
+            console.error('Error rejecting invitation:', error);
+            return res.status(500).json({ error: 'Error rejecting invitation' });
+        }
+        res.json({ message: 'Invitation rejected successfully' });
+    });
+});
+
+app.get('/collaboration/invitations', verifyToken, (req, res) => {
+    const userId = req.userId; 
+
+    connection.query(
+        `SELECT gi.id, c.name AS group_name, gi.status
+         FROM group_invitations gi
+         JOIN collaborations c ON gi.collaboration_id = c.id
+         WHERE gi.receiver_id = ? AND gi.status = 'Pending'`, [userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error fetching invitations:', error);
+                return res.status(500).json({ error: 'Error fetching invitations' });
+            }
+            res.json(results);
+        }
+    );
+});
+
+
+app.get('/collaboration/groups/:groupId/todo', verifyToken, (req, res) => {
+    const groupId = req.params.groupId;
+    const userId = req.userId;
+    connection.query(
+        `SELECT * FROM collaboration_members 
+         WHERE collaboration_id = ? AND user_id = ?`, [groupId, userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error checking group membership:', error);
+                return res.status(500).json({ error: 'Error checking group membership' });
+            }
+            if (results.length === 0) {
+                return res.status(403).json({ error: 'Forbidden: You are not a member of this group' });
+            }
+            connection.query(
+                'SELECT * FROM todo_list WHERE collaboration_id = ?', [groupId],
+                (err, todos) => {
+                    if (err) {
+                        console.error('Error fetching todos:', err);
+                        return res.status(500).json({ error: 'Error fetching todos' });
+                    }
+                    res.json(todos);
+                }
+            );
+        }
+    );
+});
+
+app.post('/collaboration/groups/:groupId/todo', verifyToken, (req, res) => {
+    const groupId = req.params.groupId;
+    const { task_name } = req.body;
+
+    connection.query(
+        `SELECT * FROM collaboration_members 
+         WHERE collaboration_id = ? AND user_id = ?`, [groupId, req.userId],
+        (error, results) => {
+            if (error) {
+                console.error('Error checking group membership:', error);
+                return res.status(500).json({ error: 'Error checking group membership' });
+            }
+            if (results.length === 0) {
+                return res.status(403).json({ error: 'Forbidden: You are not a member of this group' });
+            }
+            connection.query(
+                'INSERT INTO todo_list (collaboration_id, task_name, created_at) VALUES (?, ?, NOW())',
+                [groupId, task_name],
+                (err, result) => {
+                    if (err) {
+                        console.error('Error adding todo:', err);
+                        return res.status(500).json({ error: 'Error adding todo' });
+                    }
+                    res.status(201).json({ id: result.insertId, task_name });
+                }
+            );
+        }
+    );
+});
+
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

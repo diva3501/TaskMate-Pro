@@ -25,7 +25,7 @@ const TaskList = () => {
         setError('No authentication token found. Please log in.');
         return;
       }
-      const response = await axios.get('http://localhost:3000/tasks', {
+      const response = await axios.get('http://localhost:5000/tasks', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,7 +40,7 @@ const TaskList = () => {
   const deleteTask = async (taskId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3000/tasks/${taskId}`, {
+      await axios.delete(`http://localhost:5000/tasks/${taskId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,7 +68,7 @@ const TaskList = () => {
           due_date: newDueDate.toISOString().slice(0, 19).replace('T', ' '),
           status: newStatus,
         };
-        await axios.put(`http://localhost:3000/tasks/edit/${selectedTask.id}`, updatedTask, {
+        await axios.put(`http://localhost:5000/tasks/edit/${selectedTask.id}`, updatedTask, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

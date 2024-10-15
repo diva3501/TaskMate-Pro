@@ -1,0 +1,116 @@
+.collaboration-page {
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #eef2f7;
+}
+
+.collaboration-container {
+  display: flex;
+  flex: 1;
+  background-color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.sidebar, .invitations-sidebar {
+  width: 20%;
+  padding: 20px;
+  background-color: #ffffff;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.sidebar {
+  border-right: 1px solid #ddd;
+}
+
+.invitations-sidebar {
+  border-left: 1px solid #ddd;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h2, h3 {
+  color: #007bff;
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: #f2f2f2;
+}
+
+.group-creation, .todo-creation, .invite-section {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 10px;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.todo-list li {
+  padding: 12px;
+  background-color: #e9f7fe;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.todo-list li:hover {
+  background-color: #d6e9fc;
+}
+
+@media (max-width: 768px) {
+  .collaboration-container {
+    flex-direction: column;
+  }
+
+  .sidebar, .invitations-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .main-content {
+    padding: 15px;
+  }
+}

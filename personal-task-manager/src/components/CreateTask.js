@@ -40,7 +40,7 @@ const CreateTask = () => {
 
     try {
       const token = localStorage.getItem('token'); 
-      const response = await axios.post('http://localhost:3000/tasks', newTask, {
+      const response = await axios.post('http://localhost:5000/tasks', newTask, {
         headers: {
           Authorization: `Bearer ${token}`
         }
