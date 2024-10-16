@@ -15,7 +15,7 @@ function SignUp() {
                 password,
             });
             console.log('User registered:', response.data);
-            window.location.href = '/loginpage';
+            window.location.href = '/';
         } catch (err) {
             console.error('Registration error:', err);
             setError(err.response ? err.response.data.error : 'Registration failed');

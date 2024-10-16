@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Navbar from './Navbar'; 
 import './CreateTask.css';
 
 const CustomHeader = ({ date, decreaseMonth, increaseMonth }) => {
-  const dateFormat = "MMMM yyyy";
-
   return (
     <div className="custom-datepicker-header">
       <button onClick={decreaseMonth} className="custom-arrow">{"<"}</button>
@@ -58,7 +56,9 @@ const CreateTask = () => {
       
       <form className="create-task-form" onSubmit={handleSubmit}>
         <h1>Create Task</h1>
+        
         <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        
         <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
         
         <div className="date-time-picker-container">

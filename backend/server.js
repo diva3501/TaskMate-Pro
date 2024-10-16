@@ -25,7 +25,6 @@ connection.connect((err) => {
     console.log('Connected to the database successfully!');
 });
 
-// Middleware to verify JWT
 const verifyToken = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
@@ -43,7 +42,6 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-// User Registration
 app.post('/register', (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -56,7 +54,6 @@ app.post('/register', (req, res) => {
     });
 });
 
-// User Login
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
@@ -75,7 +72,6 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Get User Tasks
 app.get('/tasks', verifyToken, (req, res) => {
     connection.query('SELECT * FROM tasks WHERE user_id = ?', [req.userId], (error, results) => {
         if (error) {
@@ -86,7 +82,6 @@ app.get('/tasks', verifyToken, (req, res) => {
     });
 });
 
-// Unread Notifications Count
 app.get('/notifications/unread-count', verifyToken, (req, res) => {
     connection.query(
         'SELECT COUNT(*) AS count FROM notifications WHERE user_id = ? AND is_read = 0',
@@ -101,7 +96,6 @@ app.get('/notifications/unread-count', verifyToken, (req, res) => {
     );
 });
 
-// Get Notifications
 app.get('/notifications', verifyToken, (req, res) => {
     connection.query(
         'SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC',
@@ -116,7 +110,6 @@ app.get('/notifications', verifyToken, (req, res) => {
     );
 });
 
-// Clear Notifications
 app.delete('/notifications', verifyToken, (req, res) => {
     connection.query('DELETE FROM notifications WHERE user_id = ?', [req.userId], (error, results) => {
         if (error) {
@@ -127,7 +120,6 @@ app.delete('/notifications', verifyToken, (req, res) => {
     });
 });
 
-// Create New Task
 app.post('/tasks', verifyToken, (req, res) => {
     const { title, description, due_date, category, priority, status } = req.body;
 
@@ -149,7 +141,6 @@ app.post('/tasks', verifyToken, (req, res) => {
     );
 });
 
-// Edit Task
 app.put('/tasks/edit/:id', verifyToken, (req, res) => {
     const { id } = req.params;
     const { due_date, status } = req.body;
@@ -186,7 +177,6 @@ app.put('/tasks/edit/:id', verifyToken, (req, res) => {
     });
 });
 
-// Delete Task
 app.delete('/tasks/:id', verifyToken, (req, res) => {
     const { id } = req.params;
 
@@ -207,7 +197,6 @@ app.delete('/tasks/:id', verifyToken, (req, res) => {
     });
 });
 
-// Get Overdue Tasks
 app.get('/tasks/overdue', verifyToken, (req, res) => {
     connection.query(
         "SELECT * FROM tasks WHERE due_date < NOW() AND status != 'Completed' AND user_id = ?",
@@ -219,7 +208,6 @@ app.get('/tasks/overdue', verifyToken, (req, res) => {
             }
 
             if (results.length > 0) {
-                console.log("Overdue tasks found:", results); 
 
                 results.forEach(task => {
                     const message = `Overdue task: ${task.title}`;
@@ -470,6 +458,24 @@ app.post('/collaboration/groups/:groupId/todo', verifyToken, (req, res) => {
                     res.status(201).json({ id: result.insertId, task_name });
                 }
             );
+        }
+    );
+});
+app.delete('/collaboration/groups/:groupId/todo/:todoId', verifyToken, (req, res) => {
+    const { groupId, todoId } = req.params;
+
+    connection.query(
+        'DELETE FROM todo_list WHERE id = ? AND collaboration_id = ?',
+        [todoId, groupId],
+        (error, result) => {
+            if (error) {
+                console.error("Error deleting todo:", error);
+                return res.status(500).json({ error: 'Failed to delete the To-Do item' });
+            }
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'To-Do item not found' });
+            }
+            res.json({ message: 'To-Do item deleted successfully!' });
         }
     );
 });

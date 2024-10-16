@@ -29,10 +29,10 @@ const Navbar = () => {
             <nav className="stroke">
                 <ul>
                     <li><Link to="/homepage">Home</Link></li>
-                    <li><Link to="/tasklist">Tasklist</Link></li>
-                    <li><Link to="/create">Create Task</Link></li>
-                    <li><Link to="/overdue">Overdue Tasks</Link></li>
-                    <li><Link to="/profile">Profile</Link></li>
+                    <li><Link to="/tasklist-taskmanager">Tasklist</Link></li>
+                    <li><Link to="/createtask-taskmanager">Create Task</Link></li>
+                    <li><Link to="/overduetask-taskmanager">Overdue Tasks</Link></li>
+                    <li><Link to="/collaborative-to-dos-taskmanager">Collab Hub</Link></li>
                     <li>
                         <Link to="/notifications" className="notification-icon">
                             <FaBell style={{ color: unreadCount > 0 ? 'red' : 'black', fontSize: '1.5em' }} />

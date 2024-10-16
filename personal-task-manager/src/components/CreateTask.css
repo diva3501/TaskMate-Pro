@@ -1,44 +1,47 @@
 .create-task-container {
+  background-image: url('../assets/createtask.jpg');
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url('../assets/createtask.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
-  margin-top: 55px;
+  margin-top: 30px;
+  padding: 20px; 
+  padding-top: 70px;
 }
 
-.background-image {
-  width: 50%;
-  height: 100%;
-  background-image: url('../assets/createtask.jpg');
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.8);
+.create-task-container .navbar {
+  width: 100vw;
+  margin: 0;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .create-task-form {
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   padding: 40px;
-  border-radius: 10px;
-  background-color: rgba(172, 123, 123, 0.9);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  margin: auto; 
-  margin-top: auto;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.95); 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  margin-top: 30px; 
 }
 
 .create-task-form h1 {
-  font-size: 26px;
+  font-size: 28px;
   margin-bottom: 20px;
   text-align: center;
-  color: #ffffff;
-}
-
-.create-task-form:hover {
-  transform: translateY(-5px);
+  color: #333; 
 }
 
 .create-task-form input,
@@ -47,7 +50,7 @@
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 2px solid #6a11cb; 
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 16px;
@@ -58,83 +61,9 @@
 .create-task-form input:focus,
 .create-task-form textarea:focus,
 .create-task-form select:focus {
-  border-color: #6a11cb;
-  box-shadow: 0 0 5px rgba(106, 17, 203, 0.5);
+  border-color: #2575fc; 
+  box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
   outline: none;
-}
-
-.custom-datepicker-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #6a11cb;
-  color: white;
-  border-radius: 8px 8px 0 0;
-}
-
-.custom-arrow {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 20px;
-  transition: color 0.3s;
-}
-
-.custom-arrow:hover {
-  color: #2575fc;
-}
-
-.create-task-form select {
-  appearance: none;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="%236a11cb" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>') no-repeat right 10px center;
-  background-size: 12px;
-  padding-right: 30px;
-}
-
-.react-datepicker-wrapper {
-  width: 100%;
-}
-
-.react-datepicker {
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.react-datepicker__header {
-  background-color: #6a11cb;
-  color: white;
-  border-radius: 8px 8px 0 0;
-}
-
-.react-datepicker__day:hover {
-  background-color: #f0f0f0;
-}
-
-.react-datepicker__day--selected {
-  background-color: #6a11cb;
-  color: white;
-}
-
-.react-datepicker__triangle {
-  display: none;
-}
-
-.date-time-picker-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.selected-date {
-  margin-left: 10px;
-  font-size: 16px;
-  color: #333;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 5px 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .create-task-form button {
@@ -147,41 +76,43 @@
   font-weight: bold;
   color: #ffffff;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
 .create-task-form button:hover {
   background-color: #2575fc;
   transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Media queries */
 @media (max-width: 768px) {
   .create-task-form {
-      padding: 20px; 
-      margin: 20px;
+    padding: 30px; 
+    margin: 20px;
   }
 
   .create-task-form h1 {
-      font-size: 22px; 
+    font-size: 24px; 
   }
 
   .create-task-form button {
-      padding: 12px;
-      font-size: 16px; 
+    padding: 12px;
+    font-size: 16px; 
   }
 }
 
 @media (max-width: 480px) {
   .create-task-form {
-      padding: 15px; 
+    padding: 15px; 
   }
 
   .create-task-form h1 {
-      font-size: 20px; 
+    font-size: 22px; 
   }
 
   .create-task-form button {
-      padding: 10px; 
-      font-size: 14px; 
+    padding: 10px; 
+    font-size: 14px; 
   }
 }

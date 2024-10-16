@@ -96,9 +96,9 @@ const TaskList = () => {
 
   return (
     <div>
-      <Navbar />
       <div className="task-list-container">
-        <Link to="/create" className="create-task-button">Create New Task</Link>
+          <Navbar />
+        <Link to="/createtask-taskmanager" className="create-task-button">Create New Task</Link>
         <br />
 
         {error && <p className="error-message">{error}</p>}
