@@ -82,6 +82,7 @@ PersonalTaskManager is a task management application built with Node.js, Express
 
 ## Technologies Used
 
+- **Frontend**: React js
 - **Backend**: Node.js, Express
 - **Database**: MySQL
 - **Authentication**: JWT, bcrypt
