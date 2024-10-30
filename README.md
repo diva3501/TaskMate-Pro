@@ -1,83 +1,93 @@
-# Task Manager Web Application
+# PersonalTaskManager
 
-This is a web application for managing tasks and user accounts. It provides functionality for users to register, log in, create, update, delete tasks, and view task statistics.
-
-## Technologies Used
-
-- **Frontend**: React.js, Axios for HTTP requests, React Router for navigation
-- **Backend**: Python Flask, PostgreSQL database
-- **Database**: PostgreSQL
-- **Security**: Password hashing using Werkzeug's `generate_password_hash` and `check_password_hash`
-- **Other Libraries**: psycopg2 for PostgreSQL database connectivity, flask_cors for enabling CORS
+PersonalTaskManager is a task management application built with Node.js, Express, MySQL, and JWT authentication. It provides users with task management, collaboration features, and notifications to keep track of their tasks and deadlines efficiently.
 
 ## Features
 
-- **User Authentication**:
-  - Register: Allows new users to create an account with a unique username and password.
-  - Login: Existing users can securely log in using their credentials.
+- **User Authentication**: Secure registration and login with password hashing and JWT token-based authentication.
+- **Task Management**: Create, edit, delete, and view tasks with attributes like due date, priority, status, and category.
+- **Notifications**: Track changes and updates through real-time notifications for task additions, updates, and overdue tasks.
+- **Collaboration**: Create and manage task groups with other users. Invite friends to join groups, accept/reject invitations, and collaborate on shared tasks.
+- **Statistics**: View a summary of completed, pending, and overdue tasks.
+  
+## Prerequisites
 
-- **Task Management**:
-  - Create Task: Users can add new tasks with a title and description.
-  - Update Task: Edit existing tasks by modifying their title and description.
-  - Delete Task: Remove tasks from the database.
-  - View Tasks: Display all tasks stored in the database.
-  - Task Statistics: Retrieve statistics such as the number of completed, pending, and overdue tasks.
+- [Node.js](https://nodejs.org/) (version 12 or higher)
+- [MySQL](https://www.mysql.com/) database
 
-## Folder Structure
+## Installation
 
-- **`frontend/`**: Contains the React frontend code.
-- **`backend/`**: Holds the Python Flask backend code.
+1. **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd PersonalTaskManager
+    ```
 
-## Setup Instructions
+2. **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/diva3501/PersonalTaskManager.git
-   cd task-manager
-   ```
+3. **Setup environment variables:**
+    Create a `.env` file in the project root directory and add the following:
 
-2. **Backend Setup**:
-   - Navigate to the `backend/` directory.
-   - Install dependencies:
-     ```bash
-     pip install -r requirements.txt
-     ```
-   - Modify database connection details in `app.py` if necessary.
-   - Run the Flask server:
-     ```bash
-     python app.py
-     ```
+    ```plaintext
+    SECRET_KEY=<your_jwt_secret>
+    ```
 
-3. **Frontend Setup**:
-   - Navigate to the `frontend/` directory.
-   - Install dependencies:
-     ```bash
-     npm install
-     ```
-   - Start the React development server:
-     ```bash
-     npm start
-     ```
+4. **Database Configuration:**
+   Ensure that a MySQL database named `taskmanager` is created. Set up the user credentials as configured in your code:
 
-4. **Access the Application**:
-   - Open your browser and go to `http://localhost:3000` to view the frontend.
-   - Ensure the Flask server is running on `http://localhost:5000` for backend API calls.
+    ```plaintext
+    MySQL user: username
+    MySQL password: userpassword
+    ```
+
+5. **Run Database Migrations:**
+   Import the necessary tables as per your project schema.
+
+## Running the Application
+
+1. **Start the server:**
+    ```bash
+    node app.js
+    ```
+
+2. The server will start on `http://localhost:3000`.
 
 ## API Endpoints
 
-- **`POST /register`**: Register a new user with username and password.
-- **`POST /login`**: Log in with username and password to obtain an access token.
-- **`GET /tasks`**: Retrieve all tasks.
-- **`GET /tasks/statistics`**: Retrieve task statistics (completed, pending, overdue).
-- **`POST /tasks`**: Create a new task.
-- **`PUT /tasks/<id>`**: Update an existing task by ID.
-- **`DELETE /tasks/<id>`**: Delete a task by ID.
-- **`GET /tasks/overdue`**: Retrieve overdue tasks.
+### Authentication
+- **POST** `/register` - Register a new user.
+- **POST** `/login` - Login a user and receive a JWT token.
 
-## Troubleshooting
+### Tasks
+- **GET** `/tasks` - Get all tasks for the logged-in user.
+- **POST** `/tasks` - Create a new task.
+- **PUT** `/tasks/edit/:id` - Edit an existing task.
+- **DELETE** `/tasks/:id` - Delete a task.
+- **GET** `/tasks/overdue` - Get overdue tasks.
+- **PUT** `/tasks/complete/:id` - Mark a task as completed.
+- **GET** `/tasks/statistics` - Get task completion statistics.
 
-- Ensure PostgreSQL is installed and running.
-- Verify database connection details in `app.py`.
-- Check CORS configuration in Flask (`CORS(app)` in `app.py`).
-- Inspect browser console for frontend errors.
+### Notifications
+- **GET** `/notifications/unread-count` - Get count of unread notifications.
+- **GET** `/notifications` - Get all notifications.
+- **DELETE** `/notifications` - Clear all notifications.
 
+### Collaboration
+- **GET** `/collaboration/groups` - Get all collaboration groups the user is part of.
+- **POST** `/collaboration/groups` - Create a new collaboration group.
+- **POST** `/collaboration/groups/:groupId/invite` - Invite a user to a collaboration group.
+
+## Technologies Used
+
+- **Backend**: Node.js, Express
+- **Database**: MySQL
+- **Authentication**: JWT, bcrypt
+- **Other Libraries**: dotenv, cors, body-parser
+
+
+## Author
+
+Divakar G
