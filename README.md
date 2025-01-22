@@ -1,6 +1,6 @@
-# PersonalTaskManager
+# TaskMate Pro
 
-PersonalTaskManager is a task management application built with Node.js, Express, MySQL, and JWT authentication. It provides users with task management, collaboration features, and notifications to keep track of their tasks and deadlines efficiently.
+TaskMate Pro is a task management application built with Node.js, Express, MySQL, and JWT authentication. It provides users with task management, collaboration features, and notifications to keep track of their tasks and deadlines efficiently.
 
 ## Features
 
