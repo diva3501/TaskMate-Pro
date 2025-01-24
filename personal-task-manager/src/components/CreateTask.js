@@ -44,7 +44,7 @@ const CreateTask = () => {
         }
       });
       console.log('Task created successfully:', response.data);
-      navigate('/tasklist'); 
+      navigate('/tasklist-taskmanager'); 
     } catch (error) {
       console.error('Error creating task:', error.response ? error.response.data : error.message);
     }
